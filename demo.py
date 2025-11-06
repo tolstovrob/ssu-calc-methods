@@ -1,11 +1,11 @@
-from core.interpolation.cubic_splines import CubicSplinesSolver
-from core.interpolation.general_polynomial import GeneralPolynomialSolver
-from core.interpolation.lagrange import LagrangeSolver
-from core.interpolation.newton import NewtonSolver
-from core.linear_systems.gauss import GaussSolver
-from core.linear_systems.simple_iteration import SimpleIterationSolver
-from core.linear_systems.thomas import ThomasSolver
 from data import DataHandler
+from interpolation.cubic_splines import CubicSplinesSolver
+from interpolation.general_polynomial import GeneralPolynomialSolver
+from interpolation.lagrange import LagrangeSolver
+from interpolation.newton import NewtonSolver
+from linear_systems.gauss import GaussSolver
+from linear_systems.simple_iteration import SimpleIterationSolver
+from linear_systems.thomas import ThomasSolver
 
 
 def demo_interpolation():

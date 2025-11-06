@@ -2,7 +2,7 @@
 Задание 4: интерполяция кубическими сплайнами
 """
 
-from core.linear_systems.gauss import GaussSolver
+from linear_systems.gauss import GaussSolver
 
 from .base_interpolation import BaseInterpolationSolver
 

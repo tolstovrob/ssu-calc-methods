@@ -2,7 +2,7 @@
 Задание 1: построить интерполирующий многочлен в общем виде
 """
 
-from core.linear_systems.gauss import GaussSolver
+from linear_systems.gauss import GaussSolver
 
 from .base_interpolation import BaseInterpolationSolver
 

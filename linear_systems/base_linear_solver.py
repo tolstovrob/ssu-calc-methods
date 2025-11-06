@@ -7,7 +7,7 @@
 
 from abc import abstractmethod
 
-from core.base_solver import BaseSolver, SolutionResult
+from base_solver import BaseSolver, SolutionResult
 
 
 class BaseLinearSolver(BaseSolver):
