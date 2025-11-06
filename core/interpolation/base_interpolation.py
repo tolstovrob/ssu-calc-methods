@@ -10,7 +10,7 @@ from abc import abstractmethod
 from core.base_solver import BaseSolver, SolutionResult
 
 
-class BaseInterpolation(BaseSolver):
+class BaseInterpolationSolver(BaseSolver):
     def __init__(self, nodes_x: list[float], nodes_y: list[float]):
         super().__init__()
         self._validate_nodes(nodes_x, nodes_y)
