@@ -12,10 +12,8 @@ def demo_interpolation():
     """Демонстрация всех методов интерполяции"""
     print("=== INTERPOLATION METHODS DEMO ===\n")
 
-    # Чтение данных
     xs, fs = DataHandler.read_interpolation_nodes()
 
-    # Создание решателей
     solvers = [
         LagrangeSolver(xs, fs),
         NewtonSolver(xs, fs),
@@ -23,14 +21,12 @@ def demo_interpolation():
         CubicSplinesSolver(xs, fs),
     ]
 
-    # Тестовые точки
     test_points = []
     for i in range(len(xs) - 1):
         test_points.append(xs[i])
         test_points.append((xs[i] + xs[i + 1]) / 2)
     test_points.append(xs[-1])
 
-    # Сравнение методов
     for solver in solvers:
         result = solver.solve()
         DataHandler.print_solution(result, solver.method_name)
@@ -55,22 +51,20 @@ def demo_linear_systems():
     print("\n2. Thomas Algorithm:")
     a, main_diag, c, d = DataHandler.read_tridiagonal_system()
     n = len(main_diag)
+
     # Проверяем размерности
     if len(a) != n - 1:
-        print(
-            f"❌ Ошибка: нижняя диагональ должна содержать {n - 1} элементов, получено {len(a)}"
-        )
+        print(f"Lower diagonal should contain {n - 1} items, {len(a)} given")
         return
+
     if len(c) != n - 1:
-        print(
-            f"❌ Ошибка: верхняя диагональ должна содержать {n - 1} элементов, получено {len(c)}"
-        )
+        print(f"Upper diagonal should contain {n - 1} items, {len(a)} given")
         return
+
     if len(d) != n:
-        print(
-            f"❌ Ошибка: правая часть должна содержать {n} элементов, получено {len(d)}"
-        )
+        print(f"Constant column should contain {n - 1} items, {len(a)} given")
         return
+
     A_tridiag = [[0.0] * n for _ in range(n)]
     for i in range(n):
         # Главная диагональ
@@ -81,10 +75,6 @@ def demo_linear_systems():
         # Нижняя диагональ (элементы под главной) - ИСПРАВЛЕННЫЙ ИНДЕКС!
         if i > 0:
             A_tridiag[i][i - 1] = a[i - 1]  # БЫЛО: a[i], СТАЛО: a[i-1]
-
-    print("\nСформированная трехдиагональная матрица:")
-
-    DataHandler.print_matrix(A_tridiag)
 
     solver = ThomasSolver()
     result = solver.solve(A_tridiag, d)
