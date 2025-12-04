@@ -590,3 +590,182 @@ class ThomasSolver(BaseLinearSolver):
                     raise ValueError("Matrix is not tridiagonal")
 ```
 
+= Метод простой итерации
+
+== Условие
+
+При решении СЛАУ вида $A x = b$, где $A$ --- квадратная матрица, мы можем преобразовать ее к эквивалентному виду:
+
+$
+  mat(0, - a_12/a_11, ..., -a_(1 n) / a_11;
+      -a_21/a_22, 0, ..., -a_(2 n)/a_22;
+      dots.v, dots.v, dots.down, dots.v;
+    -a_(n 1)/a_(n n), -a_(n 2)/a_(n n), ..., 0
+    )
+  x = mat(b_1 / a_11; b_2 / a_22; dots.v; b_n / a_(n n)).
+$
+
+Таким образом исходная система допускает представление в виде:
+
+$
+ alpha x + beta = x,
+$
+
+а критерий остановки вычислений:
+
+$
+  ||x^(k) - x^(k-1)|| < e.
+$
+
+== Результат
+
+```
+Simple iteration algorithm for solving linear systems Results:
+Success: True
+Message: System solved successfully
+Result: [0.981232345, 0.981232345, 0.981232345, 0.981232345, 0.981232345]
+```
+
+== Код
+
+```py
+"""
+Задание 7: Решить СЛАУ методом простой (ехидной) итерации
+"""
+
+from .base_linear_solver import BaseLinearSolver, SolutionResult
+
+
+class SimpleIterationSolver(BaseLinearSolver):
+    def __init__(self, precision: float = 1e-6, max_iterations: int = 1000):
+        super().__init__(precision, max_iterations)
+
+    @property
+    def method_name(self) -> str:
+        return "Simple Iteration Method"
+
+    def solve(self, A: list[list[float]], b: list[float]) -> SolutionResult:
+        try:
+            self._validate_system(A, b)
+            n = len(A)
+
+            alpha, beta = self._build_iteration_system(A, b)
+
+            # Проверяем условие сходимости
+            if not self._check_convergence(alpha):
+                return SolutionResult(
+                    success=False,
+                    result=None,
+                    message="Convergence condition not satisfied (‖α‖ ≥ 1)",
+                )
+
+            # Начальное приближение - нулевой вектор
+            x = [0.0] * n
+            iterations = 0
+            error = float("inf")
+
+            for iteration in range(self.max_iterations):
+                x_new = [0.0] * n
+
+                for i in range(n):
+                    sum_term = 0.0
+                    for j in range(n):
+                        sum_term += alpha[i][j] * x[j]
+                    x_new[i] = sum_term + beta[i]
+
+                # Вычисляем погрешность
+                error = self._calculate_error(x_new, x)
+                iterations = iteration + 1
+
+                if error < self.precision:
+                    return SolutionResult(
+```
+```py
+                        success=True,
+                        result=x_new,
+                        error=error,
+                        iterations=iterations,
+                        message=f"Converged after {iterations} iterations",
+                    )
+
+                x = x_new
+            return SolutionResult(
+                success=False,
+                result=x,
+                error=error,
+                iterations=iterations,
+                message=f"Maximum iterations ({self.max_iterations}) reached",
+            )
+
+        except Exception as e:
+            return SolutionResult(
+                success=False,
+                result=None,
+                message=f"Error in simple iteration method: {str(e)}",
+            )
+
+    def _build_iteration_system(self, A: list[list[float]], b: list[float]) -> tuple:
+        n = len(A)
+        alpha = [[0.0] * n for _ in range(n)]
+        beta = [0.0] * n
+
+        for i in range(n):
+            if abs(A[i][i]) < 1e-12:
+                raise ValueError(f"Zero diagonal element a[{i}][{i}]")
+
+            beta[i] = b[i] / A[i][i]
+
+            for j in range(n):
+                if i != j:
+                    alpha[i][j] = -A[i][j] / A[i][i]
+                else:
+                    alpha[i][j] = 0.0  # диагональные элементы alpha равны 0
+
+        return alpha, beta
+
+    def _check_convergence(self, alpha: list[list[float]]) -> bool:
+        n = len(alpha)
+
+        norm_alpha = 0.0
+        for i in range(n):
+            row_sum = sum(abs(alpha[i][j]) for j in range(n))
+            norm_alpha = max(norm_alpha, row_sum)
+
+        return norm_alpha < 1.0
+```
+```py
+    def _calculate_error(self, x_new: list[float], x_old: list[float]) -> float:
+        return max(abs(x_new[i] - x_old[i]) for i in range(len(x_new)))
+```
+
+= Метод Эйлера решения задачи Коши первого порядка
+
+== Условие
+
+Необходимо решить однородное дифференциальное уравнение первого порядка:
+
+$
+  cases(y' = f(x, y)\,, y(x_0) = y_0.)
+$
+
+Реализовать тремя способами:
+
+Метод Эйлера, модифицированный метод Эйлера и метод предиктора-корректора. Наша функция представлена в виде квадрата неизвестной переменной, умноженной на номер варианта. Таким образом, производная --- удвоенное произведение неизвестной и номера варианта.
+
+```
+Метод Эйлера:
+----------------------------------------------------------------------------------------------------------------------------------
+x:        1.0000000  1.0010000  1.0020000  1.0030000  1.0040000  1.0050000  1.0060000  1.0070000  1.0080000  1.0090000  1.0100000
+y_M:      5.0000000  5.0100000  5.0200100  5.0300300  5.0400600  5.0501000  5.0601501  5.0702101  5.0802801  5.0903602  5.1004502
+y_T:      5.0000000  5.0100050  5.0200200  5.0300450  5.0400800  5.0501250  5.0601800  5.0702450  5.0803200  5.0904050  5.1005000
+Погрешн:  0.0000000  0.0000050  0.0000100  0.0000150  0.0000200  0.0000250  0.0000299  0.0000349  0.0000399  0.0000448  0.0000498
+----------------------------------------------------------------------------------------------------------------------------------
+
+Усовершенствованный метод Эйлера:
+----------------------------------------------------------------------------------------------------------------------------------
+x:        1.0000000  1.0010000  1.0020000  1.0030000  1.0040000  1.0050000  1.0060000  1.0070000  1.0080000  1.0090000  1.0100000
+y_M:      5.0000000  5.0100050  5.0200200  5.0300450  5.0400800  5.0501250  5.0601800  5.0702450  5.0803200  5.0904050  5.1005000
+y_T:      5.0000000  5.0100050  5.0200200  5.0300450  5.0400800  5.0501250  5.0601800  5.0702450  5.0803200  5.0904050  5.1005000
+Погрешн:  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000
+----------------------------------------------------------------------------------------------------------------------------------
+```
