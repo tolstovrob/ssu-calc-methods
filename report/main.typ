@@ -26,7 +26,8 @@
 
 = Построение интерполяционного многочлена в общем виде
 
-== Условие <par12>
+*Условие*
+
 
 Необходимо найти интерполяционный многочлен в общем виде. Нам даны следующие данные:
 
@@ -35,7 +36,7 @@
 
 Необходимо найти значение интерполянты в узловых точках.
 
-== Результат
+*Результат*
 
 ```
 General Polynomial Interpolation Results:
@@ -55,7 +56,7 @@ General Polynomial Interpolation - Evaluation at points:
 
 Решение использует метод Гаусса, который описан в коде 5 задания.
 
-== Код
+*Код*
 
 ```py
 """
@@ -110,11 +111,12 @@ class GeneralPolynomialSolver(BaseInterpolationSolver):
 
 = Интерполяционный многочлен в форме Лагранжа
 
-== Условие
+*Условие*
 
-Необходимо найти интерполяционный многочлен в форме Лагранжа. Входные данные те же, что и в главе @par12.
 
-== Результат
+Необходимо найти интерполяционный многочлен в форме Лагранжа. Входные данные те же, что и в главе 1.
+
+*Результат*
 
 ```
 Lagrange Interpolation Results:
@@ -134,7 +136,7 @@ Lagrange Interpolation - Evaluation at points:
 
 Найденный результат совпадает с предыдущим решением, что подтверждает его правильность.
 
-== Код
+*Код*
 
 ```py
 """
@@ -172,11 +174,12 @@ class LagrangeSolver(BaseInterpolationSolver):
 
 = Интерполяционный многочлен в форме Ньютона
 
-== Условие
+*Условие*
 
-Необходимо найти интерполяционный многочлен в форме Ньютона. Входные данные те же, что и в главе @par12.
 
-== Результат
+Необходимо найти интерполяционный многочлен в форме Ньютона. Входные данные те же, что и в главе 1.
+
+*Результат*
 
 ```
 Newton Interpolation Results:
@@ -196,7 +199,7 @@ Newton Interpolation - Evaluation at points:
 
 Найденный результат совпадает с предыдущими решением, что подтверждает его правильность.
 
-== Код
+*Код*
 
 ```py
 """
@@ -246,11 +249,12 @@ class NewtonSolver(BaseInterpolationSolver):
 
 = Интерполяция кубическими сплайнами
 
-== Условие
+*Условие*
 
-Необходимо построить интерполяционный многочлен с помощью кубических сплайнов (алгебраических многочленов третьей степени, где сплайн --- фрагмент, отрезок чего-либо). Входные данные те же, что и в главе @par12.
 
-== Результат
+Необходимо построить интерполяционный многочлен с помощью кубических сплайнов (алгебраических многочленов третьей степени, где сплайн --- фрагмент, отрезок чего-либо). Входные данные те же, что и в главе 1.
+
+*Результат*
 
 ```
 Cubic Splines Interpolation Results:
@@ -270,7 +274,7 @@ Cubic Splines Interpolation - Evaluation at points:
 
 Обратим внимание, что результат совпадает в узловых точках, но отличается в неузловых, что допустимо для этого метода.
 
-== Код
+*Код*
 
 ```py
 """
@@ -395,7 +399,8 @@ class CubicSplinesSolver(BaseInterpolationSolver):
 
 = Метод Гаусса решения СЛАУ
 
-== Условие
+*Условие*
+
 
 Метод Гаусса должен решать уравнения вида $A x = B$, где $A$ - матрица.
 Для упрощения тестирования матрица $А$ примет вид:
@@ -408,7 +413,7 @@ $
       0.24, 0.24, 0.24, 0.24, 24) x = mat(20;21;22;23;24).
 $
 
-== Результат
+*Результат*
 
 ```
 Gaussian Elimination for solving linear systems Results:
@@ -417,7 +422,7 @@ Message: System solved successfully
 Result: [1.0, 1.0, 1.0, 1.0, 1.0]
 ```
 
-== Код
+*Код*
 
 ```py
 """
@@ -482,7 +487,8 @@ class GaussSolver(BaseLinearSolver):
 
 =	Метод прогонки решения СЛАУ (трехдиагональных)
 
-== Условие
+*Условие*
+
 В данном случае решается система линейных уравнений вида $A x = B$, где A --- матрица вида:
 
 $
@@ -494,7 +500,7 @@ $
       0, 0, 0, 0.24, -24) x = mat(20; 21; 22; 23; 24).
 $
 
-== Результат
+*Результат*
 
 ```
 Thomas algorithm for solving linear systems Results:
@@ -503,7 +509,7 @@ Message: System solved successfully
 Result: [0.9837332345, 0.9837332345, 0.9837332345, 0.9837332345, 0.9837332345]
 ```
 
-== Код
+*Код*
 
 ```py
 """
@@ -592,7 +598,8 @@ class ThomasSolver(BaseLinearSolver):
 
 = Метод простой итерации
 
-== Условие
+*Условие*
+
 
 При решении СЛАУ вида $A x = b$, где $A$ --- квадратная матрица, мы можем преобразовать ее к эквивалентному виду:
 
@@ -617,7 +624,7 @@ $
   ||x^(k) - x^(k-1)|| < e.
 $
 
-== Результат
+*Результат*
 
 ```
 Simple iteration algorithm for solving linear systems Results:
@@ -626,7 +633,7 @@ Message: System solved successfully
 Result: [0.981232345, 0.981232345, 0.981232345, 0.981232345, 0.981232345]
 ```
 
-== Код
+*Код*
 
 ```py
 """
@@ -740,7 +747,8 @@ class SimpleIterationSolver(BaseLinearSolver):
 
 = Метод Эйлера решения задачи Коши первого порядка
 
-== Условие
+*Условие*
+
 
 Необходимо решить однородное дифференциальное уравнение первого порядка:
 
@@ -748,9 +756,13 @@ $
   cases(y' = f(x, y)\,, y(x_0) = y_0.)
 $
 
-Реализовать тремя способами:
+Реализовать двумя способами: методом Эйлера и усовершенствованным методом Эйлера.
 
-Метод Эйлера, модифицированный метод Эйлера и метод предиктора-корректора. Наша функция представлена в виде квадрата неизвестной переменной, умноженной на номер варианта. Таким образом, производная --- удвоенное произведение неизвестной и номера варианта.
+Функция:
+
+$ 𝑦′ = 2 ⋅ 𝑉 ⋅ 𝑥 + 𝑉 ⋅ 𝑥^2 − 𝑦, quad 𝑦(x_0) = 𝑉 ⋅ 𝑥^2 $
+
+*Результат*
 
 ```
 Метод Эйлера:
@@ -769,3 +781,271 @@ y_T:      5.0000000  5.0100050  5.0200200  5.0300450  5.0400800  5.0501250  5.06
 Погрешн:  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000
 ----------------------------------------------------------------------------------------------------------------------------------
 ```
+
+*Решение*
+
+```py
+"""
+Модуль edge_implementation.py реализует решение краевой задачи
+с использованием базового класса BaseEdgeSolver
+"""
+
+from typing import Callable, Optional, Tuple, List
+import math
+
+# Импортируем созданные ранее классы
+from base_solver import BaseSolver, SolutionResult
+from base_edge_solver import BaseEdgeSolver
+
+
+class ShootingEdgeSolver(BaseEdgeSolver):
+    """Реализация метода стрельбы для решения краевой задачи"""
+    
+    @property
+    def method_name(self) -> str:
+        return "Shooting method for edge problem"
+    
+    def solve(
+        self,
+        equation: Callable[[float, float, float], float],
+        boundary_conditions: Tuple[Tuple[float, float], Tuple[float, float]],
+        interval: Tuple[float, float],
+        step_size: Optional[float] = None,
+        **kwargs
+    ) -> SolutionResult:
+        """
+        Решение краевой задачи методом стрельбы.
+        
+        Args:
+            equation: Функция правой части y'' = f(x, y, y')
+            boundary_conditions: Краевые условия ((x0, y0), (x1, y1))
+            interval: Интервал решения (x_start, x_end)
+            step_size: Шаг сетки
+            **kwargs: Дополнительные параметры
+        
+        Returns:
+            SolutionResult с результатами вычислений
+        """
+        try:
+            self._validate_parameters(equation, boundary_conditions, interval, step_size)
+            
+            # Извлекаем краевые условия
+            (x0, y0), (x1, y1) = boundary_conditions
+            x_start, x_end = interval
+            
+            # Если шаг не указан, вычисляем его
+            if step_size is None:
+                step_size = (x_end - x_start) / 100
+```
+```py
+            initial_slope_guess = (y1 - y0) / (x1 - x0)
+            
+            # Решаем задачу Коши с начальным условием (x0, y0, y'=guess)
+            result = self._solve_cauchy(
+                equation, 
+                (x0, y0, initial_slope_guess),
+                (x_start, x_end),
+                step_size,
+                **kwargs
+            )
+            
+            if not result.success:
+                return result
+            
+            x_values, y_values = result.result
+            
+            # Корректируем методом половинного деления для удовлетворения правому краевому условию
+            iterations = 0
+            current_y_end = y_values[-1]
+            
+            while abs(current_y_end - y1) > self.precision and iterations < self.max_iterations:
+                # Корректируем начальный наклон
+                initial_slope_guess *= y1 / current_y_end if current_y_end != 0 else 1.1
+                
+                # Решаем снова
+                result = self._solve_cauchy(
+                    equation,
+                    (x0, y0, initial_slope_guess),
+                    (x_start, x_end),
+                    step_size,
+                    **kwargs
+                )
+                
+                if not result.success:
+                    return result
+                
+                x_values, y_values = result.result
+                current_y_end = y_values[-1]
+                iterations += 1
+            
+            return SolutionResult(
+                success=True,
+                result={'x': x_values, 'y': y_values, 'initial_slope': initial_slope_guess},
+                iterations=iterations,
+                error=abs(current_y_end - y1),
+                message=f"Successfully solved using {self.method_name}"
+            )
+            
+        except Exception as e:
+            return SolutionResult(
+                success=False,
+                result=None,
+                message=f"Error in {self.method_name}: {str(e)}"
+            )
+    
+    def _solve_cauchy(
+        self,
+        equation: Callable[[float, float, float], float],
+        initial_conditions: Tuple[float, float, float],  # (x0, y0, y0')
+        interval: Tuple[float, float],
+        step_size: float,
+        **kwargs
+    ) -> SolutionResult:
+        """Вспомогательный метод для решения задачи Коши"""
+        x0, y0, y_prime0 = initial_conditions
+        x_start, x_end = interval
+        
+        n = int(math.ceil((x_end - x_start) / step_size))
+        
+        x_values = [x0]
+        y_values = [y0]
+        y_prime_values = [y_prime0]
+        
+        x_current = x0
+        y_current = y0
+        y_prime_current = y_prime0
+        
+        for i in range(n):
+            if x_current >= x_end:
+                break
+            
+            # Метод Рунге-Кутты 2-го порядка для системы ОДУ
+            k1_y = y_prime_current
+            k1_y_prime = equation(x_current, y_current, y_prime_current, **kwargs)
+            
+            k2_y = y_prime_current + step_size * k1_y_prime / 2
+            k2_y_prime = equation(
+                x_current + step_size / 2,
+                y_current + step_size * k1_y / 2,
+                y_prime_current + step_size * k1_y_prime / 2,
+                **kwargs
+            )
+            
+            # Обновляем значения
+            y_next = y_current + step_size * k2_y
+            y_prime_next = y_prime_current + step_size * k2_y_prime
+            x_next = x_current + step_size
+            
+            # Корректируем шаг на последней итерации
+            if x_next > x_end:
+                step_size_corrected = x_end - x_current
+                y_next = y_current + step_size_corrected * k2_y
+                y_prime_next = y_prime_current + step_size_corrected * k2_y_prime
+                x_next = x_end
+            
+            x_values.append(x_next)
+            y_values.append(y_next)
+            y_prime_values.append(y_prime_next)
+            
+            x_current = x_next
+            y_current = y_next
+            y_prime_current = y_prime_next
+        
+        return SolutionResult(
+            success=True,
+            result=(x_values, y_values),
+            message="Cauchy problem solved"
+        )
+
+
+class FiniteDifferenceEdgeSolver(BaseEdgeSolver):
+    """Реализация метода конечных разностей для решения краевой задачи"""
+    
+    @property
+    def method_name(self) -> str:
+        return "Finite difference method for edge problem"
+    
+    def solve(
+        self,
+        equation: Callable[[float, float, float], float],
+        boundary_conditions: Tuple[Tuple[float, float], Tuple[float, float]],
+        interval: Tuple[float, float],
+        step_size: Optional[float] = None,
+        **kwargs
+    ) -> SolutionResult:
+        """
+        Решение краевой задачи методом конечных разностей.
+        
+        Args:
+            equation: Функция правой части y'' = f(x, y, y')
+            boundary_conditions: Краевые условия ((x0, y0), (x1, y1))
+            interval: Интервал решения (x_start, x_end)
+            step_size: Шаг сетки
+            **kwargs: Дополнительные параметры
+        
+        Returns:
+            SolutionResult с результатами вычислений
+        """
+        try:
+            self._validate_parameters(equation, boundary_conditions, interval, step_size)
+            
+            # Извлекаем краевые условия
+            (x0, y0), (x1, y1) = boundary_conditions
+            x_start, x_end = interval
+            
+            # Если шаг не указан, вычисляем его
+            if step_size is None:
+                step_size = (x_end - x_start) / 100
+            
+            # Создаем сетку
+            n = int(math.ceil((x_end - x_start) / step_size))
+            x_values = [x_start + i * step_size for i in range(n + 1)]
+            
+            # Корректируем последнюю точку
+            x_values[-1] = x_end
+            
+            # Инициализируем значения y
+            y_values = [0.0] * (n + 1)
+            y_values[0] = y0
+            y_values[-1] = y1
+            
+            # Итерационный процесс (метод простых итераций)
+            iterations = 0
+            max_diff = float('inf')
+            
+            while max_diff > self.precision and iterations < self.max_iterations:
+                max_diff = 0.0
+                
+                for i in range(1, n):
+                    # Аппроксимация производных конечными разностями
+                    y_prime = (y_values[i+1] - y_values[i-1]) / (2 * step_size)
+                    y_double_prime = (y_values[i+1] - 2 * y_values[i] + y_values[i-1]) / (step_size ** 2)
+                    
+                    # Вычисляем новое значение
+                    new_y = y_values[i] + 0.5 * (equation(x_values[i], y_values[i], y_prime, **kwargs) - y_double_prime)
+                    
+                    # Обновляем максимальное изменение
+                    diff = abs(new_y - y_values[i])
+                    if diff > max_diff:
+                        max_diff = diff
+                    
+                    y_values[i] = new_y
+                
+                iterations += 1
+            
+            return SolutionResult(
+                success=True,
+                result={'x': x_values, 'y': y_values},
+                iterations=iterations,
+                error=max_diff,
+                message=f"Successfully solved using {self.method_name}"
+            )
+            
+        except Exception as e:
+            return SolutionResult(
+                success=False,
+                result=None,
+                message=f"Error in {self.method_name}: {str(e)}"
+            )
+```
+
