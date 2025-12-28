@@ -20,8 +20,9 @@
 
 #let strings = (
   title: (
-    minobrnauki: "МИНОБРНАУКИ РОССИИ\nФедеральное государственное бюджетное образовательное учреждение\nвысшего образования\n",
+    minobrnauki: "МИНОБРНАУКИ РОССИИ\nФедеральное государственное бюджетное\nобразовательное учреждение высшего образования\n",
     sgu: ["САРАТОВСКИЙ НАЦИОНАЛЬНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ИМЕНИ Н. Г. ЧЕРНЫШЕВСКОГО"],
+    kafedra: [Кафедра математической физики и вычислительной математики],
     city: "Саратов",
     worktypes: (
       referat: [РЕФЕРАТ],
@@ -29,7 +30,7 @@
       diploma: [Выпускная квалификационная работа],
       autoref: [работа],
       nir: [работа],
-      pract: [Отчёт о практике],
+      pract: [по дисциплине "Методы вычислений"],
     ),
     from_course: "курса",
     from_group: "группы",
@@ -72,10 +73,9 @@
 #let space = [ ].func()
 #let sequence = [].func()
 
-#let code_font_size = font_size - 2pt
+#let code_font_size = font_size - 4pt
 // TODO: надо выяснить сколько нужно приплюсовывать к -indent без хардкода
 #let code_block_move = -indent + 11pt
-
 #let code-block-raw(code) = {
   set text(size: code_font_size)
   // TODO: нужно выяснить почему нужно переоборачивать raw, чтобы размер был
@@ -202,8 +202,9 @@
       set align(center)
       // set text(font: "Tempora")
       text(strings.title.minobrnauki)
-      v(0.2em)
-      text(weight: "bold", strings.title.sgu)
+      text(weight: "bold", strings.title.sgu, size: 13.5pt)
+      v(1.7em)
+      text(strings.title.kafedra, size: 13.5pt)
       set align(left)
     },
     /*
@@ -215,14 +216,19 @@
      */
     _default_body: data => {
       set align(center)
-      v(3cm)
+      v(2.5cm)
       text(weight: "bold", upper(data.title))
+      v(0.2cm)
       par(data.worktype)
-      v(1.5cm)
+      v(0.4cm)
       set align(left)
       text(data.group + "\n")
+      v(0.15cm)
       text(data.speciality + "\n")
-      text(data.faculty + "\n" + data.author)
+      v(0.2cm)
+      text(data.faculty + "\n")
+      v(0.3cm)
+      text(data.author)
     },
     /*
      * Отвечает за вывод города и года на титульном листе
@@ -241,7 +247,9 @@
         columns: (1fr,) * 3,
         align: (left, center, right),
         row-gutter: 5pt,
-        post, block(inset: (y: 13pt), line(length: 3cm, stroke: .4pt)), name,
+        post,
+        block(inset: (y: -17pt), line(length: 3cm, stroke: .4pt)),
+        block(inset: (y: -17pt), line(length: 5cm, stroke: .4pt)),
       )
     },
     /*
@@ -332,9 +340,6 @@
   document: (
     apply_heading_styles: it => {
       set text(size: font_size)
-      if it.depth == 1 {
-        pagebreak(weak: true)
-      }
       if strings.caps_headings.contains(it.body) {
         align(center, it.body)
       } else {
@@ -348,38 +353,39 @@
      *  - info - информация о документе
      */
     make_toc: (info: ()) => {
-      show outline.entry.where(level: 1): it => {
-        let heading-text = it.at("element", default: (:)).at("body", default: "")
-        
-        let is-outlined = it.element.outlined
-        let is-annex = state("annex", false).at(it.element.location())
-        let is-caps = heading-text in strings.caps_headings
-        
-        // TODO: Хотелось бы запретить создавать ненумерованные заголовки. По
-        // какой-то причине это не срабаотывает для самого заголовка содержания. Не
-        // понятно почему оно сюда вообще попадает.
-        // assert(is-caps or (not is-outlined) or it.element.numbering != none)
-        
-        if (not (is-annex or is-caps)) {
-          return it
-        }
-        
-        assert(is-annex or is-caps)
-        let prefix = none
-        if is-annex {
-          prefix = [ПРИЛОЖЕНИЕ #it.prefix() #heading-text]
-        } else if is-caps {
-          prefix = heading-text + sym.space
-        }
-        link(
-          it.element.location(),
-          it.indented(
-            none,
-            prefix + sym.space + box(width: 1fr, it.fill) + sym.space + sym.wj + it.page(),
-          ),
-        )
-      }
-      outline(title: [СОДЕРЖАНИЕ])
+      // show outline.entry.where(level: 1): it => {
+      //   let heading-text = it.at("element", default: (:)).at("body", default: "")
+      //
+      //   let is-outlined = it.element.outlined
+      //   let is-annex = state("annex", false).at(it.element.location())
+      //   let is-caps = heading-text in strings.caps_headings
+      //
+      //   // TODO: Хотелось бы запретить создавать ненумерованные заголовки. По
+      //   // какой-то причине это не срабаотывает для самого заголовка содержания. Не
+      //   // понятно почему оно сюда вообще попадает.
+      //   // assert(is-caps or (not is-outlined) or it.element.numbering != none)
+      //
+      //   if (not (is-annex or is-caps)) {
+      //     return it
+      //   }
+      //
+      //   assert(is-annex or is-caps)
+      //   let prefix = none
+      //   if is-annex {
+      //     prefix = [ПРИЛОЖЕНИЕ #it.prefix() #heading-text]
+      //   } else if is-caps {
+      //     prefix = heading-text + sym.space
+      //   }
+      //   link(
+      //     it.element.location(),
+      //     it.indented(
+      //       none,
+      //       prefix + sym.space + box(width: 1fr, it.fill) + sym.space + sym.wj + it.page(),
+      //     ),
+      //   )
+      // }
+      // pagebreak()
+      // outline(title: [СОДЕРЖАНИЕ])
     },
     /*
      * Генерирует весь документ
@@ -523,9 +529,6 @@
   set align(center)
   
   show heading: it => {
-    if it.depth == 1 {
-      pagebreak(weak: true)
-    }
     set text(size: font_size)
     let letter = counter(heading).display(annex-numbering)
     [ПРИЛОЖЕНИЕ #letter \ #it.body #v(line_spacing / 2)]
